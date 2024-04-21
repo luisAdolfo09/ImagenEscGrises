@@ -15,8 +15,7 @@ namespace ImagenEscGrises
             ApplicationConfiguration.Initialize();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            IImagenRepository repo = new();
-            Application.Run(new Form1(repo));
+            Application.Run(new Form1());
         }
     }
 

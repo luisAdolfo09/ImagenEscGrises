@@ -53,7 +53,7 @@
             pB2.Location = new Point(595, 56);
             pB2.Name = "pB2";
             pB2.Size = new Size(450, 356);
-            pB2.SizeMode = PictureBoxSizeMode.Zoom;
+            pB2.SizeMode = PictureBoxSizeMode.AutoSize;
             pB2.TabIndex = 1;
             pB2.TabStop = false;
             pB2.Click += pB2_Click;
@@ -66,6 +66,7 @@
             btn2.TabIndex = 2;
             btn2.Text = "Cambiar color a escala de grises ---->";
             btn2.UseVisualStyleBackColor = true;
+            btn2.Click += btn2_Click;
             // 
             // btn1
             // 

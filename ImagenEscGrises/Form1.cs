@@ -1,18 +1,18 @@
+using System.Drawing;
+
 namespace ImagenEscGrises
 {
     public partial class Form1 : Form
     {
-        private readonly IImagenRepository imagenRepository;
+        private IImagenRepository imagenRepository = new CargarImagenRepository();
         private Bitmap imagenOriginal;
-        private Bitmap imagenGris;
+        private Bitmap? imagenGris;
 
-        public Form1(IImagenRepository imagenRepository)
+        public Form1()
         {
             InitializeComponent();
-            this.imagenRepository = imagenRepository;   
         }
 
-        
 
         private void btn1_Click(object sender, EventArgs e)
         {
@@ -25,9 +25,10 @@ namespace ImagenEscGrises
                 {
                     try
                     {
+                        imagenOriginal = new Bitmap(o.FileName);
                         Imagen imagen = new Imagen { Name = o.FileName, ibitmap = imagenOriginal };
                         pB1.Image = imagenOriginal;
-                        imagenOriginal = new Bitmap(o.FileName);
+                        
                         pB2.Image = null;
                         imagenGris = null;
 
@@ -47,22 +48,30 @@ namespace ImagenEscGrises
         private void CambiarPixelesGrises(Imagen imagen)
         {
             Bitmap original = imagen.ibitmap;
+
+
+           
             imagenGris = new Bitmap(original.Width, original.Height);
+
+            
             Parallel.For(0, original.Width, x =>
             {
-                foreach (int y in Enumerable.Range(0, original.Height))
+                for (int y = 0; y < original.Height; y++)
                 {
-                    Color actual, NuevoGris;
-                    actual = original.GetPixel(x, y);
-                    NuevoGris = Color.FromArgb(actual.R, actual.R, actual.R);
-                    imagenGris.SetPixel(x, y, NuevoGris);
+                    Color color = original.GetPixel(x, y);
 
+
+                    int gris = (int)(color.R + color.R + color.R);
+
+                    
+                    Color grisColor = Color.FromArgb(gris, gris, gris);
+
+                    
+                    imagenGris.SetPixel(x, y, grisColor);
                 }
             });
-
-            pB2.Image = imagenGris;
         }
-        private void pB2_Click(object sender, EventArgs e)
+        private void btn2_Click(object sender, EventArgs e)
         {
             List<Imagen> imagenes = imagenRepository.CargarImagenes();
             if (imagenes.Count > 0)
@@ -77,6 +86,10 @@ namespace ImagenEscGrises
                 MessageBox.Show("Primero debes cargar una imagen.");
             }
         }
+        private void pB2_Click(object sender, EventArgs e)
+        {
+            
+        }
         private void Form1_Load(object sender, EventArgs e)
         {
 
@@ -86,6 +99,6 @@ namespace ImagenEscGrises
 
         }
 
-       
+        
     }
 }

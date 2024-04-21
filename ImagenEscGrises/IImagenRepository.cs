@@ -12,5 +12,14 @@ namespace ImagenEscGrises
         List<Imagen> CargarImagenes();
         
     };
-    
+
+    public class Imagen
+    {
+        public string Name { get; set; }
+        public Bitmap ibitmap { get; set; }
+
+
+    }
 }
+    
+
