@@ -7,7 +7,8 @@ namespace ImagenEscGrises
     {
 
         private List<Bitmap> imagenes_grises = new List<Bitmap>();
-        private Bitmap copia;
+    
+      
         public Form1()
         {
             InitializeComponent();
@@ -29,31 +30,43 @@ namespace ImagenEscGrises
 
                     try
                     {
-                        foreach (string rutas in o.FileNames)
+                        Parallel.For(0, o.FileNames.Length, async i =>
                         {
-                            copia = new Bitmap(rutas);
-
-                            Task<Bitmap> gris = Task.Run(() =>
+                            string ruta = o.FileNames[i];
+                            Bitmap imagen_orginal = new Bitmap(ruta);
+                            Imagen_Gris ima = new Imagen_Gris();
+                            Bitmap Imagen_gris = await ima.Imagen_final(imagen_orginal);
+                            lock (Imagen_gris)
                             {
-                                Imagen_Gris im = new Imagen_Gris(); return im.Imagen_final(copia);
-                            });
+                                imagenes_grises.Add(Imagen_gris);
+                            }
 
-                            imagenes_grises.Add(await gris);
+                        });
 
-                        }
 
                         string carpetaEscritorio = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 
 
+
+            
 
                         for (int i = 0; i < imagenes_grises.Count; i++)
                         {
                             string nombreArchivo = $"imagen_{i}.png";
                             string rutaCompleta = Path.Combine(carpetaEscritorio, nombreArchivo);
 
+                            // Verificar si la imagen ya existe en el escritorio
+                            if (!File.Exists(rutaCompleta))
+                            {
 
-                            imagenes_grises[i].Save(rutaCompleta, ImageFormat.Png);
+                                imagenes_grises[i].Save(rutaCompleta, ImageFormat.Png);
+                            }
+
+                            
                         }
+
+
+                        imagenes_grises.Clear();
 
                         MessageBox.Show($"se guardaron las imagenes en {carpetaEscritorio}");
 
