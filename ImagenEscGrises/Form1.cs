@@ -43,32 +43,29 @@ namespace ImagenEscGrises
 
                         });
 
-
-                        string carpetaEscritorio = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-
-
-
-            
-
-                        for (int i = 0; i < imagenes_grises.Count; i++)
+                        using (FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog())
                         {
-                            string nombreArchivo = $"imagen_{i}.png";
-                            string rutaCompleta = Path.Combine(carpetaEscritorio, nombreArchivo);
+                            folderBrowserDialog.Description = "Selecciona un directorio para guardar las imágenes.";
 
-                            // Verificar si la imagen ya existe en el escritorio
-                            if (!File.Exists(rutaCompleta))
+                            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
                             {
+                                string directorio = folderBrowserDialog.SelectedPath;
 
-                                imagenes_grises[i].Save(rutaCompleta, ImageFormat.Png);
+                                foreach (Bitmap imagen in imagenes_grises)
+                                {
+                                    string nombreArchivo = "imagen_" + DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".png";
+                                    string rutaCompleta = System.IO.Path.Combine(directorio, nombreArchivo);
+                                    imagen.Save(rutaCompleta, System.Drawing.Imaging.ImageFormat.Png);
+                                }
+
+                                MessageBox.Show("Las imágenes se han guardado exitosamente en el directorio seleccionado.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             }
-
-                            
                         }
 
 
-                        imagenes_grises.Clear();
 
-                        MessageBox.Show($"se guardaron las imagenes en {carpetaEscritorio}");
+
+                        imagenes_grises.Clear();
 
                         pictureBox1.Visible = false;
                     }
