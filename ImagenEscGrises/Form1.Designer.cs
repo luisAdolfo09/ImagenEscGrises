@@ -28,104 +28,53 @@
         /// </summary>
         private void InitializeComponent()
         {
-            pB1 = new PictureBox();
-            pB2 = new PictureBox();
-            btn2 = new Button();
-            btn1 = new Button();
-            label1 = new Label();
-            label2 = new Label();
-            ((System.ComponentModel.ISupportInitialize)pB1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pB2).BeginInit();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            btn_cargar_imagen = new Button();
+            pictureBox1 = new PictureBox();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
-            // pB1
+            // btn_cargar_imagen
             // 
-            pB1.Location = new Point(29, 56);
-            pB1.Name = "pB1";
-            pB1.Size = new Size(435, 356);
-            pB1.SizeMode = PictureBoxSizeMode.Zoom;
-            pB1.TabIndex = 0;
-            pB1.TabStop = false;
-            pB1.Click += pictureBox1_Click;
+            btn_cargar_imagen.Location = new Point(58, 34);
+            btn_cargar_imagen.Margin = new Padding(3, 2, 3, 2);
+            btn_cargar_imagen.Name = "btn_cargar_imagen";
+            btn_cargar_imagen.Size = new Size(273, 50);
+            btn_cargar_imagen.TabIndex = 3;
+            btn_cargar_imagen.Text = "Cargar Imagen";
+            btn_cargar_imagen.UseVisualStyleBackColor = true;
+            btn_cargar_imagen.Click += btn1_Click;
             // 
-            // pB2
+            // pictureBox1
             // 
-            pB2.Location = new Point(595, 56);
-            pB2.Name = "pB2";
-            pB2.Size = new Size(450, 356);
-            pB2.SizeMode = PictureBoxSizeMode.AutoSize;
-            pB2.TabIndex = 1;
-            pB2.TabStop = false;
-            pB2.Click += pB2_Click;
-            // 
-            // btn2
-            // 
-            btn2.Location = new Point(486, 127);
-            btn2.Name = "btn2";
-            btn2.Size = new Size(90, 188);
-            btn2.TabIndex = 2;
-            btn2.Text = "Cambiar color a escala de grises ---->";
-            btn2.UseVisualStyleBackColor = true;
-            btn2.Click += btn2_Click;
-            // 
-            // btn1
-            // 
-            btn1.Location = new Point(29, 418);
-            btn1.Name = "btn1";
-            btn1.Size = new Size(435, 59);
-            btn1.TabIndex = 3;
-            btn1.Text = "Cargar Imagen";
-            btn1.UseVisualStyleBackColor = true;
-            btn1.Click += btn1_Click;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Arial Narrow", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            label1.ForeColor = SystemColors.ActiveCaptionText;
-            label1.Location = new Point(162, 20);
-            label1.Name = "label1";
-            label1.Size = new Size(136, 24);
-            label1.TabIndex = 4;
-            label1.Text = "Imagen Orinigal";
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Arial Narrow", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            label2.Location = new Point(707, 20);
-            label2.Name = "label2";
-            label2.Size = new Size(210, 24);
-            label2.TabIndex = 5;
-            label2.Text = "Imagen Convertida a Gris";
+            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
+            pictureBox1.Location = new Point(94, 107);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(200, 183);
+            pictureBox1.SizeMode = PictureBoxSizeMode.AutoSize;
+            pictureBox1.TabIndex = 4;
+            pictureBox1.TabStop = false;
             // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1092, 489);
-            Controls.Add(label2);
-            Controls.Add(label1);
-            Controls.Add(btn1);
-            Controls.Add(btn2);
-            Controls.Add(pB2);
-            Controls.Add(pB1);
+            ClientSize = new Size(369, 331);
+            Controls.Add(pictureBox1);
+            Controls.Add(btn_cargar_imagen);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "Form1";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Form1";
-            Load += Form1_Load;
-            ((System.ComponentModel.ISupportInitialize)pB1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pB2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-
-        private PictureBox pB1;
         private PictureBox pB2;
         private Button btn2;
-        private Button btn1;
-        private Label label1;
-        private Label label2;
+        private Button btn_cargar_imagen;
+        private PictureBox pictureBox1;
     }
 }

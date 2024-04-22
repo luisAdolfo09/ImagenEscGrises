@@ -1,104 +1,71 @@
 using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace ImagenEscGrises
 {
     public partial class Form1 : Form
     {
-        private IImagenRepository imagenRepository = new CargarImagenRepository();
-        private Bitmap imagenOriginal;
-        private Bitmap? imagenGris;
-
+ 
+        private List<Bitmap> imagenes_grises = new List<Bitmap>();
+        private Bitmap copia;
         public Form1()
         {
             InitializeComponent();
         }
 
 
-        private void btn1_Click(object sender, EventArgs e)
+        private async void btn1_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog o = new OpenFileDialog())
             {
-                o.Filter = "JPG (*.jpg)|*.jpg|PNG (*.png)|*.png|Todos los archivos (*.*)|*.*";
+                o.Filter = "Archivos de tipo JPG (*.jpg)|*.jpg|PNG (*.png)|*.png|Todos los archivos (*.*)|*.*";
                 o.Title = "Seleccione una imagen";
+                o.Multiselect = true;
+
 
                 if (o.ShowDialog() == DialogResult.OK)
                 {
+
                     try
                     {
-                        imagenOriginal = new Bitmap(o.FileName);
-                        Imagen imagen = new Imagen { Name = o.FileName, ibitmap = imagenOriginal };
-                        pB1.Image = imagenOriginal;
-                        
-                        pB2.Image = null;
-                        imagenGris = null;
+                        foreach (string rutas in o.FileNames)
+                        {
+                            copia = new Bitmap(rutas);
 
-                        imagenRepository.AgregarImagen(imagen);
+                            Task<Bitmap> gris = Task.Run(() => 
+                            {
+                                Imagen_Gris im = new Imagen_Gris(); return im.Imagen_final(copia); 
+                             });
+
+                            imagenes_grises.Add(await gris);
+
+                        }
+
+                        string carpetaEscritorio = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
+
+                     
+                        for (int i = 0; i < imagenes_grises.Count; i++)
+                        {
+                            string nombreArchivo = $"imagen_{i}.png"; 
+                            string rutaCompleta = Path.Combine(carpetaEscritorio, nombreArchivo);
+
+                            
+                            imagenes_grises[i].Save(rutaCompleta, ImageFormat.Png);
+                        }
+
+                        MessageBox.Show($"se guardaron las imagenes en {carpetaEscritorio}");
+
+
                     }
-                    catch (IOException)
+                    catch (Exception ex)
                     {
-
-                        MessageBox.Show("Error al intentar cargar la imagen");
+                        MessageBox.Show($"Ocurrio un error {ex.Message}");
                     }
-
                 }
 
             }
         }
 
-        private void CambiarPixelesGrises(Imagen imagen)
-        {
-            Bitmap original = imagen.ibitmap;
-
-
-           
-            imagenGris = new Bitmap(original.Width, original.Height);
-
-            
-            Parallel.For(0, original.Width, x =>
-            {
-                for (int y = 0; y < original.Height; y++)
-                {
-                    Color color = original.GetPixel(x, y);
-
-
-                    int gris = (int)(color.R + color.R + color.R);
-
-                    
-                    Color grisColor = Color.FromArgb(gris, gris, gris);
-
-                    
-                    imagenGris.SetPixel(x, y, grisColor);
-                }
-            });
-        }
-        private void btn2_Click(object sender, EventArgs e)
-        {
-            List<Imagen> imagenes = imagenRepository.CargarImagenes();
-            if (imagenes.Count > 0)
-            {
-                Parallel.ForEach(imagenes, imagen =>
-                {
-                    CambiarPixelesGrises(imagen);
-                });
-            }
-            else
-            {
-                MessageBox.Show("Primero debes cargar una imagen.");
-            }
-        }
-        private void pB2_Click(object sender, EventArgs e)
-        {
-            
-        }
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        
     }
 }
